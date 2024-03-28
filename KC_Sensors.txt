@@ -1,0 +1,98 @@
+Pub/Sub: innovation
+Pass: Innovation_wQ1Z3Q5n64
+Topic: innovation/airmonitoring/WSNs
+host: mqttserver.tk
+port: 1883
+
+MQTT_SERVER = "mqttserver.tk"
+MQTT_PORT = 1883
+MQTT_USERNAME = "innovation"
+MQTT_PASSWORD = "Innovation_RgPQAZoA5N"
+MQTT_TOPIC = /innovation/airmonitoring/WSNs
+
+
+
+Định dạng dữ liệu (các trường "temp_0001","humi_0001","pm10_0001", "pm2.5_0001", "CO_0001","CO2_0001","SO2_0001","NO2_0001","O3_0001")
+
+{
+  "station_id": "air_0001",
+  "station_name": "AIR 0001",
+  "sensors": [
+    {
+      "id": "temp_0001",
+      "value": "23.00"
+    },
+    {
+      "id": "humi_0001",
+      "value": "56.00"
+    },
+    {
+      "id": "illuminance_0001",
+      "value": "439.00"
+    },
+    {
+      "id": "atmosphere_0001",
+      "value": "100.00"
+    },
+    {
+      "id": "noise_0001",
+      "value": "51.00"
+    },
+    {
+      "id": "pm10_0001",
+      "value": "17.00"
+    },
+    {
+      "id": "pm2.5_0001",
+      "value": "17.00"
+    },
+    {
+      "id": "CO_0001",
+      "value": "2.00"
+    },
+    {
+      "id": "CO2_0001",
+      "value": "476.00"
+    },
+    {
+      "id": "SO2_0001",
+      "value": "0.00"
+    },
+    {
+      "id": "NO2_0001",
+      "value": "1.00"
+    },
+    {
+      "id": "O3_0001",
+      "value": "3.00"
+    },
+    {
+      "id": "temp_0002",
+      "value": "23.00"
+    },
+    {
+      "id": "humi_0002",
+      "value": "2.00"
+    },
+    {
+      "id": "ph_0002",
+      "value": "7.00"
+    },
+    {
+      "id": "EC_0002",
+      "value": "0.00"
+    },
+    {
+      "id": "Nito_0002",
+      "value": "0.00"
+    },
+    {
+      "id": "Photpho_0002",
+      "value": "0.00"
+    },
+    {
+      "id": "Kali_0002",
+      "value": "0.00"
+    }
+  ]
+}
