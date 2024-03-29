@@ -48,11 +48,11 @@ def get_PM25_subindex(x):
 # PM10 Sub-Index calculation
 def get_PM10_subindex(x):
     if x <= 50:
-        return x
+        return x * 50 / 50
     elif x <= 150:
         return 50 + (x - 50) * 50 / 100
     elif x <= 250:
-        return 100 + (x - 150) * 50 / 150
+        return 100 + (x - 150) * 50 / 100
     elif x <= 350:
         return 150 + (x - 250) * 50 / 100
     elif x <= 420:
@@ -66,20 +66,22 @@ def get_PM10_subindex(x):
 
 # SO2 Sub-Index calculation
 def get_SO2_subindex(x):
-    if x <= 40:
-        return x * 50 / 40
-    elif x <= 80:
-        return 50 + (x - 40) * 50 / 40
-    elif x <= 380:
-        return 100 + (x - 80) * 100 / 300
+    if x <= 125:
+        return x * 50 / 125
+    elif x <= 350:
+        return 50 + (x - 125) * 50 / 225
+    elif x <= 550:
+        return 100 + (x - 350) * 50 / 200
     elif x <= 800:
-        return 200 + (x - 380) * 100 / 420
+        return 150 + (x - 550) * 50 / 250
     elif x <= 1600:
-        return 300 + (x - 800) * 100 / 800
-    elif x > 1600:
-        return 400 + (x - 1600) * 100 / 800
+        return 200 + (x - 800) * 100 / 800
+    elif x < 2100:
+        return 300 + (x - 1600) * 100 / 500
+    elif x < 2630:
+        return 400 + (x - 2100) * 100 / 530
     else:
-        return 0
+        return 500 + (x - 2630) * 100 / 530
 
 # NO2 Sub-Index calculation
 def get_NO2_subindex(x):
@@ -88,17 +90,17 @@ def get_NO2_subindex(x):
     elif x <= 200:
         return 50 + (x - 100) * 50 / 100
     elif x <= 700:
-        return 100 + (x - 200) * 100 / 500
+        return 100 + (x - 200) * 50 / 500
     elif x <= 1200:
-        return 200 + (x - 700) * 100 / 500
+        return 150 + (x - 700) * 50 / 500
     elif x <= 2350:
-        return 300 + (x - 1200) * 200 / 1150
+        return 200 + (x - 1200) * 100 / 1150
     elif x <= 3100:
-        return 400 + (x - 2350) * 100 / 750
+        return 300 + (x - 2350) * 100 / 750
     elif x < 3850:
-        return 500 + (x - 3100) * 100 / 750
+        return 400 + (x - 3100) * 100 / 750
     else:
-        return 600
+        return 500 + (x - 3850) * 100 / 750
 
 # CO Sub-Index calculation
 def get_CO_subindex(x):
@@ -109,15 +111,15 @@ def get_CO_subindex(x):
     elif x <= 45000:
         return 100 + (x - 30000) * 50 / 15000
     elif x <= 60000:
-        return 200 + (x - 45000) * 100 / 15000
+        return 150 + (x - 45000) * 50 / 15000
     elif x <= 90000:
-        return 300 + (x - 60000) * 100 / 30000
+        return 200 + (x - 60000) * 100 / 30000
     elif x <= 120000:
-        return 400 + (x - 90000) * 100 / 30000
+        return 300 + (x - 90000) * 100 / 30000
     elif x < 150000:
-        return 500 + (x - 120000) * 100 / 30000
+        return 400 + (x - 120000) * 100 / 30000
     else:
-        return 600
+        return 500 + (x - 150000) * 100 / 30000
 
 
 # O3 Sub-Index calculation
@@ -127,15 +129,17 @@ def get_O3_subindex_1h(x):
     elif x <= 200:
         return 50 + (x - 160) * 50 / 40
     elif x <= 300:
-        return 100 + (x - 200) * 100 / 100
+        return 100 + (x - 200) * 50 / 100
     elif x <= 400:
-        return 200 + (x - 300) * 100 / 100
+        return 150 + (x - 300) * 50 / 100
     elif x <= 800:
-        return 300 + (x - 400) * 100 / 400
+        return 200 + (x - 400) * 100 / 400
+    elif x < 1000:
+        return 300 + (x - 800) * 100 / 200
     elif x < 1200:
-        return 400 + (x - 800) * 100 / 400
+        return 400 + (x - 1000) * 100 / 200
     else:
-        return 500
+        return 500 + (x - 1200) * 100 / 200
 
 def get_O3_subindex_8h(x):
     if x <= 100:
@@ -143,10 +147,10 @@ def get_O3_subindex_8h(x):
     elif x <= 120:
         return 50 + (x - 100) * 50 / 20
     elif x <= 170:
-        return 100 + (x - 120) * 100 / 50
+        return 100 + (x - 120) * 50 / 50
     elif x <= 210:
-        return 200 + (x - 170) * 100 / 40
+        return 150 + (x - 170) * 50 / 40
     elif x <= 400:
-        return 300 + (x - 210) * 100 / 190
+        return 200 + (x - 210) * 100 / 190
     else:
-        return 400
+        return 300 + (x - 400) * 100 / 190
