@@ -33,11 +33,11 @@ def get_PM25_subindex(x):
     elif x <= 80:
         return 100 + (x - 50) * 50 / 30
     elif x <= 150:
-        return 150 + (x - 80) * 100 / 70
+        return 150 + (x - 80) * 50 / 70
     elif x <= 250:
         return 200 + (x - 150) * 100 / 100
     elif x <= 350:
-        return 300 + (x - 250) * 100 / 150
+        return 300 + (x - 250) * 100 / 100
     elif x < 500:
         return 400 + (x - 350) * 100 / 150
     else:
