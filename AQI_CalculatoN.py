@@ -154,3 +154,40 @@ def get_O3_subindex_8h(x):
         return 200 + (x - 210) * 100 / 190
     else:
         return 300 + (x - 400) * 100 / 190
+
+def get_O3_AQI(O3_1h, O3_8h):
+    if O3_8h > 400:
+        return get_O3_subindex_1h(O3_1h)
+    else:
+        return get_O3_subindex_8h(O3_8h)
+
+
+def get_overall_daily_AQI(PM25, PM10, SO2, NO2, CO, O3_1h, O3_8h):
+    # Calculate AQI for each pollutant
+    AQI_PM25 = get_PM25_subindex(PM25)
+    AQI_PM10 = get_PM10_subindex(PM10)
+    AQI_SO2 = get_SO2_subindex(SO2)
+    AQI_NO2 = get_NO2_subindex(NO2)
+    AQI_CO = get_CO_subindex(CO)
+    AQI_O3 = get_O3_AQI(O3_1h, O3_8h)
+
+    # Find the maximum AQI among all pollutants
+    max_AQI = max(AQI_PM25, AQI_PM10, AQI_SO2, AQI_NO2, AQI_CO, AQI_O3)
+
+    return max_AQI
+
+def get_AQI_bucket(x):
+    if x <= 50:
+        return "Good"
+    elif x <= 100:
+        return "Moderate"
+    elif x <= 150:
+        return "Unhealthy for sensitive groups"
+    elif x <= 200:
+        return "Unhealthy"
+    elif x <= 300:
+        return "Very unhealthy"
+    elif x > 300:
+        return "Hazardous"
+    else:
+        return
