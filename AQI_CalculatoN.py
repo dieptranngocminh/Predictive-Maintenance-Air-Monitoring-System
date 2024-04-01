@@ -1,27 +1,6 @@
 #Calculation of AQI day-based
 
-import MQTT_Listener
-
 from enum import Enum
-
-
-class Pollutant(Enum):
-    PM25 = "PM2.5"
-    PM10 = "PM10"
-    O3 = "O3"
-    CO = "CO"
-    SO2 = "SO2"
-    NO2 = "NO2"
-
-    def get_literal(self):
-        return self.value
-
-    @staticmethod
-    def parse_from_string(text):
-        for pollutant in Pollutant:
-            if pollutant.get_literal() == text:
-                return pollutant
-        return None
 
 
 # PM2.5 Sub-Index calculation
