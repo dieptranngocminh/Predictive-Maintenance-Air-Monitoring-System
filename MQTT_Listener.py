@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 import time
 from AQI_CalculatoN import*
-
+from collections import deque
 # Initialize Firebase
 cred = credentials.Certificate("firebase-key.json")
 firebase_admin.initialize_app(cred, {
@@ -26,6 +26,28 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe("/innovation/airmonitoring/WSNs")
 
 sensor_values = {}
+# Define global variables to store O3 sensor values
+o3_values_1h = deque(maxlen=60)  # Store values for 1 hour (assuming data received every minute)
+o3_values_8h = deque(maxlen=480)  # Store values for 8 hours (assuming data received every minute)
+
+
+def update_o3_averages(value):
+    # Add new O3 value to the deque for 1 hour
+    o3_values_1h.append(value)
+
+    # Add new O3 value to the deque for 8 hours
+    o3_values_8h.append(value)
+
+
+def calculate_o3_averages():
+    # Calculate average for O3_1h
+    o3_1h_average = sum(o3_values_1h) / len(o3_values_1h) if o3_values_1h else None
+
+    # Calculate average for O3_8h
+    o3_8h_average = sum(o3_values_8h) / len(o3_values_8h) if o3_values_8h else None
+
+    return o3_1h_average, o3_8h_average
+
 
 # Function called when receiving a message from MQTT
 def on_message(client, userdata, msg):
@@ -86,11 +108,10 @@ def on_message(client, userdata, msg):
             no2_subindex = get_NO2_subindex(sensor_values['NO2'])
             co_subindex = get_CO_subindex(sensor_values['CO'])
             # Calculate O3 subindices and overall daily AQI
-            o3_1h_value = sensor_values.get('O3_1h', 0)
-            o3_8h_value = sensor_values.get('O3_8h', 0)
-            o3_1h_subindex = get_O3_subindex_1h(o3_1h_value)
-            o3_8h_subindex = get_O3_subindex_8h(o3_8h_value)
-            o3_subindex = get_O3_AQI(o3_1h_value, o3_8h_value)
+            o3_1h_average, o3_8h_average = calculate_o3_averages()
+            o3_1h_subindex = get_O3_subindex_1h(o3_1h_average)
+            o3_8h_subindex = get_O3_subindex_8h(o3_8h_average)
+            o3_aqi = get_O3_AQI(o3_1h_average, o3_8h_average)
 
             # Calculate overall daily AQI
             overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex, co_subindex,
