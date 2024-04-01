@@ -189,8 +189,8 @@ def test_AQI_calculation():
         aqi_bucket = get_AQI_bucket(overall_aqi)
 
         # Print test results
-        #print("Overall Daily AQI:", overall_aqi)
-        #print("AQI Bucket from function:", aqi_bucket)
+        print("Overall Daily AQI:", overall_aqi)
+        print("AQI Bucket from function:", aqi_bucket)
 
     except Exception as e:
         print("Test failed due to an exception:", e)
