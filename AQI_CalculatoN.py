@@ -170,3 +170,31 @@ def get_AQI_bucket(x):
         return "Hazardous"
     else:
         return
+
+def test_AQI_calculation():
+    try:
+        # Sample sensor values
+        PM25 = 40
+        PM10 = 60
+        SO2 = 20
+        NO2 = 30
+        CO = 7000
+        O3_1h = 180
+        O3_8h = 300
+
+        # Calculate overall daily AQI
+        overall_aqi = get_overall_daily_AQI(PM25, PM10, SO2, NO2, CO, O3_1h, O3_8h)
+
+        # Get AQI bucket
+        aqi_bucket = get_AQI_bucket(overall_aqi)
+
+        # Print test results
+        #print("Overall Daily AQI:", overall_aqi)
+        #print("AQI Bucket from function:", aqi_bucket)
+
+    except Exception as e:
+        print("Test failed due to an exception:", e)
+
+# Run the test function
+test_AQI_calculation()
+
