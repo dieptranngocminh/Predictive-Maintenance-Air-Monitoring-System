@@ -95,6 +95,7 @@ def on_message(client, userdata, msg):
             # Calculate overall daily AQI
             overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex, co_subindex,
                                                 o3_1h_subindex, o3_8h_subindex)
+            print("Overall Daily AQI:", overall_aqi)
     except Exception as e:
         print("Exception in on_message: ", e)
 
