@@ -27,8 +27,8 @@ def on_connect(client, userdata, flags, rc):
 
 sensor_values = {}
 # Define global variables to store O3 sensor values
-o3_values_1h = deque(maxlen=60)  # Store values for 1 hour (assuming data received every minute)
-o3_values_8h = deque(maxlen=480)  # Store values for 8 hours (assuming data received every minute)
+o3_values_1h = deque(maxlen=6)  # Store values for 1 hour (data received every 10 minute)
+o3_values_8h = deque(maxlen=48)  # Store values for 8 hours (data received every 10 minute)
 
 
 def update_o3_averages(value):
