@@ -86,7 +86,7 @@ def delete_airmonitoring_data():
 
 
 # Connect to MQTT Server
-client = mqtt.Client()
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
 client.on_connect = on_connect
 client.on_message = on_message
 
