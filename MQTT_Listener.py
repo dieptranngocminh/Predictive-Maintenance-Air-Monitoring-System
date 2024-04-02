@@ -84,6 +84,7 @@ def on_message(client, userdata, msg):
                 if sensor_data:
                     if date_str in sensor_data:
                         sensor_data[date_str][time_str] = sensor.get('value')
+                        
                     else:
                         sensor_data[date_str] = {time_str: sensor.get('value')}
                 # If the sensor data doesn't exist, create a new entry
@@ -116,6 +117,8 @@ def on_message(client, userdata, msg):
             # Calculate overall daily AQI
             overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex, co_subindex,
                                                 o3_1h_subindex, o3_8h_subindex)
+
+            print(" AQI VALUE ", overall_aqi)
     except Exception as e:
         print("Exception in on_message: ", e)
 
