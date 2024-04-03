@@ -95,22 +95,22 @@ def on_message(client, userdata, msg):
                         sensor_value = sensor_data[date_str][time_str]
                         # Calculate AQI
                         if sensor_id == 'pm2_5_0001':
-                            PM25 = int(sensor_value)
+                            PM25 = float(sensor_value)
                             #pm25_subindex = get_PM25_subindex(sensor_values['PM25'])
                         elif sensor_id == 'pm10_0001':
-                            PM10 = int(sensor_value)
+                            PM10 = float(sensor_value)
                             #pm10_subindex = get_PM10_subindex(sensor_values['PM10'])
                         elif sensor_id == 'SO2_0001':
-                            SO2 = int(sensor_value)
+                            SO2 = float(sensor_value)
                             #so2_subindex = get_SO2_subindex(sensor_values['SO2'])
                         elif sensor_id == 'NO2_0001':
-                            NO2 = int(sensor_value)
+                            NO2 = float(sensor_value)
                             #no2_subindex = get_NO2_subindex(sensor_values['NO2'])
                         elif sensor_id == 'CO_0001':
-                            CO = int(sensor_value)
+                            CO = float(sensor_value)
                             #co_subindex = get_CO_subindex(sensor_values['CO'])
                         elif sensor_id == 'O3_0001':
-                            O3 = int(sensor_value)
+                            O3 = float(sensor_value)
                             update_o3_averages(O3)
 
                         o3_1h_avg, o3_8h_avg = calculate_o3_averages()
@@ -129,7 +129,7 @@ def on_message(client, userdata, msg):
                         overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex, co_subindex, o3_1h_avg, o3_8h_avg)
                         aqi_bucket = get_AQI_bucket(overall_aqi)
 
-                        db.reference("/airmonitoringV2/AQI").push(overall_aqi)
+                        #db.reference("/airmonitoringV2/AQI").push(overall_aqi)
 
                         # Print test results
                         #print("test AQI")
@@ -145,6 +145,7 @@ def on_message(client, userdata, msg):
                 # Update the sensor data in Firebase
 
                 db.reference(sensor_path).set(sensor_data)
+                db.reference("/airmonitoringV2/AQI").child(timestamp).set(overall_aqi)
 
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
@@ -177,7 +178,9 @@ def on_message(client, userdata, msg):
             # print("Overall Daily AQI:", overall_aqi)
             # print("AQI Bucket from function:", aqi_bucket)
         """
-        db.reference("/airmonitoringV2/AQI").push(overall_aqi)
+        # Set the AQI value with its corresponding timestamp
+
+        #db.reference("/airmonitoringV2/AQI").push(overall_aqi)
     except Exception as e:
         print("Exception in on_message: ", e)
 
