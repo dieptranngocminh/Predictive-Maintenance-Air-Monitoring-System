@@ -122,6 +122,8 @@ def on_message(client, userdata, msg):
                             o3_8h_subindex = get_O3_subindex_8h(o3_8h_avg)
                             o3_subindex = get_O3_AQI(o3_1h_subindex, o3_8h_subindex)
                             print("O3 subindex ", o3_subindex)
+                        if all(sensor_values):
+                            print("O3 subindex test ", o3_subindex)
 
                 else:
                     sensor_data = {date_str: {time_str: sensor.get('value')}}
