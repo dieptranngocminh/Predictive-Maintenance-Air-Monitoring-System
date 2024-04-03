@@ -127,6 +127,7 @@ def on_message(client, userdata, msg):
                                             o3_1h_subindex, o3_8h_subindex)
                         aqi_bucket = get_AQI_bucket(overall_aqi)
                         # Print test results
+                        print("test AQI")
                         print("Overall Daily AQI:", overall_aqi)
                         print("AQI Bucket from function:", aqi_bucket)
                     else:
