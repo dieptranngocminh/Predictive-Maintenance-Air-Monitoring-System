@@ -179,13 +179,13 @@ def get_AQI_bucket(x):
 def test_AQI_calculation():
     try:
         # Sample sensor values
-        PM25 = 40
-        PM10 = 60
-        SO2 = 20
-        NO2 = 30
-        CO = 7000
-        O3_1h = 180
-        O3_8h = 300
+        PM25 = 28.00
+        PM10 = 39.00
+        SO2 = 0.00
+        NO2 = 1.00
+        CO = 1.00
+        O3_1h = 3.00
+        O3_8h = 3.00
 
         # Calculate overall daily AQI
         overall_aqi = get_overall_daily_AQI(PM25, PM10, SO2, NO2, CO, O3_1h, O3_8h)
@@ -201,5 +201,5 @@ def test_AQI_calculation():
         print("Test failed due to an exception:", e)
 
 # Run the test function
-#test_AQI_calculation()
+test_AQI_calculation()
 
