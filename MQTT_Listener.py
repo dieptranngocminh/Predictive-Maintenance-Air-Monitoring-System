@@ -128,13 +128,9 @@ def on_message(client, userdata, msg):
                         # Calculate overall daily AQI
                         overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex, co_subindex, o3_1h_avg, o3_8h_avg)
                         aqi_bucket = get_AQI_bucket(overall_aqi)
+                        current_date = datetime.now().strftime("%Y-%m-%d")
+                        db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
 
-                        #db.reference("/airmonitoringV2/AQI").push(overall_aqi)
-
-                        # Print test results
-                        #print("test AQI")
-                        #print("Overall Daily AQI:", overall_aqi)
-                        #print("AQI Bucket from function:", aqi_bucket)
                     else:
                         sensor_data[date_str] = {time_str: sensor.get('value')}
                         sensor_value = sensor_data[date_str][time_str]
@@ -145,7 +141,6 @@ def on_message(client, userdata, msg):
                 # Update the sensor data in Firebase
 
                 db.reference(sensor_path).set(sensor_data)
-                db.reference("/airmonitoringV2/AQI").child(timestamp).set(overall_aqi)
 
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
