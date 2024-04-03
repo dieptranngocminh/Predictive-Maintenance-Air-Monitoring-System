@@ -45,6 +45,7 @@ def get_PM10_subindex(x):
 
 # SO2 Sub-Index calculation
 def get_SO2_subindex(x):
+    x = 0.0409 * x * 64
     if x <= 125:
         return x * 50 / 125
     elif x <= 350:
@@ -64,6 +65,7 @@ def get_SO2_subindex(x):
 
 # NO2 Sub-Index calculation
 def get_NO2_subindex(x):
+    x = 0.0409 * x * 46
     if x <= 100:
         return x * 50 / 100
     elif x <= 200:
@@ -83,6 +85,7 @@ def get_NO2_subindex(x):
 
 # CO Sub-Index calculation
 def get_CO_subindex(x):
+    x = 0.0409 * x * 28
     if x <= 10000:
         return x * 50 / 10000
     elif x <= 30000:
@@ -103,6 +106,7 @@ def get_CO_subindex(x):
 
 # O3 Sub-Index calculation
 def get_O3_subindex_1h(x):
+    x = 0.0409 * x * 48
     if x <= 160:
         return x * 50 / 160
     elif x <= 200:
@@ -121,6 +125,7 @@ def get_O3_subindex_1h(x):
         return 500 + (x - 1200) * 100 / 200
 
 def get_O3_subindex_8h(x):
+    x = 0.0409 * x * 48
     if x <= 100:
         return x * 50 / 100
     elif x <= 120:
