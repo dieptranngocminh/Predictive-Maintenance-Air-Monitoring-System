@@ -97,23 +97,18 @@ def on_message(client, userdata, msg):
                         if sensor_id == 'pm2_5_0001':
                             PM25 = float(sensor_value)
                             pm25_subindex = get_PM25_subindex(PM25)
-                            print("PM25 subindex ", pm25_subindex)
                         elif sensor_id == 'pm10_0001':
                             PM10 = float(sensor_value)
                             pm10_subindex = get_PM10_subindex(PM10)
-                            print("PM10 subindex ", pm10_subindex)
                         elif sensor_id == 'SO2_0001':
                             SO2 = float(sensor_value)
                             so2_subindex = get_SO2_subindex(SO2)
-                            print("SO2 subindex ", so2_subindex)
                         elif sensor_id == 'NO2_0001':
                             NO2 = float(sensor_value)
                             no2_subindex = get_NO2_subindex(NO2)
-                            print("NO2 subindex ", no2_subindex)
                         elif sensor_id == 'CO_0001':
                             CO = float(sensor_value)
                             co_subindex = get_CO_subindex(CO)
-                            print("CO subindex ", co_subindex)
                         elif sensor_id == 'O3_0001':
                             O3 = float(sensor_value)
                             update_o3_averages(O3)
@@ -121,8 +116,6 @@ def on_message(client, userdata, msg):
                             o3_1h_subindex = get_O3_subindex_1h(o3_1h_avg)
                             o3_8h_subindex = get_O3_subindex_8h(o3_8h_avg)
                             o3_subindex = get_O3_AQI(o3_1h_subindex, o3_8h_subindex)
-                            print("O3 subindex ", o3_subindex)
-
                 else:
                     sensor_data = {date_str: {time_str: sensor.get('value')}}
                     sensor_value = sensor_data[date_str][time_str]
@@ -131,14 +124,14 @@ def on_message(client, userdata, msg):
                 sensor_data = {date_str: {time_str: sensor.get('value')}}
                 sensor_value = sensor_data[date_str][time_str]
 
+
                 # Update the sensor data in Firebase
-                db.reference(sensor_path).set(sensor_data)
+        db.reference(sensor_path).set(sensor_data)
 
-                overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
+        overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
                                                         co_subindex, o3_1h_avg, o3_8h_avg)
-
                 #aqi_bucket = get_AQI_bucket(overall_aqi)
-                db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
+        db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
 

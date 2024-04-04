@@ -148,15 +148,11 @@ def get_O3_AQI(O3_1h, O3_8h):
 
 def get_overall_daily_AQI(PM25, PM10, SO2, NO2, CO, O3_1h, O3_8h):
     # Calculate AQI for each pollutant
-    AQI_PM25 = get_PM25_subindex(PM25)
-    AQI_PM10 = get_PM10_subindex(PM10)
-    AQI_SO2 = get_SO2_subindex(SO2)
-    AQI_NO2 = get_NO2_subindex(NO2)
-    AQI_CO = get_CO_subindex(CO)
-    AQI_O3 = get_O3_AQI(O3_1h, O3_8h)
+
+    O3 = get_O3_AQI(O3_1h, O3_8h)
 
     # Find the maximum AQI among all pollutants
-    max_AQI = max(AQI_PM25, AQI_PM10, AQI_SO2, AQI_NO2, AQI_CO, AQI_O3)
+    max_AQI = max(PM25, PM10, SO2, NO2, CO, O3)
 
     return max_AQI
 
