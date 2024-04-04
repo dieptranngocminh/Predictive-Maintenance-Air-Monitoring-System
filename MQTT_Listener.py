@@ -130,15 +130,14 @@ def on_message(client, userdata, msg):
             else:
                 sensor_data = {date_str: {time_str: sensor.get('value')}}
                 sensor_value = sensor_data[date_str][time_str]
+
                 # Update the sensor data in Firebase
                 db.reference(sensor_path).set(sensor_data)
-        #test_aqi = get_overall_daily_AQI(*pm25_subindex, *pm10_subindex, *so2_subindex, *no2_subindex,
-        #                                 *co_subindex, *o3_1h_avg, *o3_8h_avg)
-        #print("test aqi ", test_aqi)
+
                 overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
                                                         co_subindex, o3_1h_avg, o3_8h_avg)
-                print("AQI ", overall_aqi)
-        #aqi_bucket = get_AQI_bucket(overall_aqi)
+
+                #aqi_bucket = get_AQI_bucket(overall_aqi)
                 db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
@@ -149,31 +148,9 @@ def on_message(client, userdata, msg):
 
         }
         db.reference("/airmonitoringV2/station_info").set(station_info)
-        """
-        # Calculate PM2.5, PM10, SO2, NO2, CO, and O3 subindices if all required sensors are available
-        if all(sensor_id in sensor_values for sensor_id in ['PM25', 'PM10', 'SO2', 'NO2', 'CO', 'O3']):
-            pm25_subindex = get_PM25_subindex(sensor_values['PM25'])
-            pm10_subindex = get_PM10_subindex(sensor_values['PM10'])
-            so2_subindex = get_SO2_subindex(sensor_values['SO2'])
-            no2_subindex = get_NO2_subindex(sensor_values['NO2'])
-            co_subindex = get_CO_subindex(sensor_values['CO'])
-            # Calculate O3 subindices and overall daily AQI
-            o3_1h_average, o3_8h_average = calculate_o3_averages()
-            o3_1h_subindex = get_O3_subindex_1h(o3_1h_average)
-            o3_8h_subindex = get_O3_subindex_8h(o3_8h_average)
-            o3_aqi = get_O3_AQI(o3_1h_average, o3_8h_average)
 
-            # Calculate overall daily AQI
-            overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex, co_subindex,
-                                                o3_1h_subindex, o3_8h_subindex)
-            aqi_bucket = get_AQI_bucket(overall_aqi)
-            # print("test")
-            # print("Overall Daily AQI:", overall_aqi)
-            # print("AQI Bucket from function:", aqi_bucket)
-        """
         # Set the AQI value with its corresponding timestamp
 
-        #db.reference("/airmonitoringV2/AQI").push(overall_aqi)
     except Exception as e:
         print("Exception in on_message: ", e)
 
