@@ -123,22 +123,23 @@ def on_message(client, userdata, msg):
                             o3_subindex = get_O3_AQI(o3_1h_subindex, o3_8h_subindex)
                             print("O3 subindex ", o3_subindex)
 
-
-
                 else:
                     sensor_data = {date_str: {time_str: sensor.get('value')}}
                     sensor_value = sensor_data[date_str][time_str]
 
+            else:
+                sensor_data = {date_str: {time_str: sensor.get('value')}}
+                sensor_value = sensor_data[date_str][time_str]
                 # Update the sensor data in Firebase
                 db.reference(sensor_path).set(sensor_data)
-        test_aqi = get_overall_daily_AQI(*pm25_subindex, *pm10_subindex, *so2_subindex, *no2_subindex,
-                                         *co_subindex, *o3_1h_avg, *o3_8h_avg)
-        print("test aqi ", test_aqi)
-        overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
-                                                    co_subindex, o3_1h_avg, o3_8h_avg)
-        print("AQI ", overall_aqi)
-        aqi_bucket = get_AQI_bucket(overall_aqi)
-        db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
+        #test_aqi = get_overall_daily_AQI(*pm25_subindex, *pm10_subindex, *so2_subindex, *no2_subindex,
+        #                                 *co_subindex, *o3_1h_avg, *o3_8h_avg)
+        #print("test aqi ", test_aqi)
+                overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
+                                                        co_subindex, o3_1h_avg, o3_8h_avg)
+                print("AQI ", overall_aqi)
+        #aqi_bucket = get_AQI_bucket(overall_aqi)
+                db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
 
