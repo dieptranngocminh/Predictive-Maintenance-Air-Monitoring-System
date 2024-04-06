@@ -99,11 +99,12 @@ def on_message(client, userdata, msg):
                     if date_str in sensor_data:
                         sensor_data[date_str][time_str] = sensor.get('value')
                         sensor_value = sensor_data[date_str][time_str]
+                        print("AQI")
                         # Calculate AQI
                         if sensor_id == 'pm2_5_0001':
                             PM25 = float(sensor_value)
                             pm25_subindex = get_PM25_subindex(PM25)
-                            print("PM25 ", PM25 )
+                            print("PM25 ")
                         elif sensor_id == 'pm10_0001':
                             PM10 = float(sensor_value)
                             pm10_subindex = get_PM10_subindex(PM10)
