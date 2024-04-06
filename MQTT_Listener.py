@@ -130,8 +130,10 @@ def on_message(client, userdata, msg):
                 sensor_data = {date_str: {time_str: sensor.get('value')}}
                 sensor_value = sensor_data[date_str][time_str]
 
-                # Update the sensor data in Firebase
-                db.reference(sensor_path).set(sensor_data)
+            # Update the sensor data in Firebase
+            db.reference(sensor_path).set(sensor_data)
+            if(db.reference(sensor_path).set(sensor_data)):
+                print("set")
 
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
