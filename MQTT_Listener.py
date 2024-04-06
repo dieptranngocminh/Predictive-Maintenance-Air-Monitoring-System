@@ -103,6 +103,7 @@ def on_message(client, userdata, msg):
                         if sensor_id == 'pm2_5_0001':
                             PM25 = float(sensor_value)
                             pm25_subindex = get_PM25_subindex(PM25)
+                            print("PM25 ", PM25 )
                         elif sensor_id == 'pm10_0001':
                             PM10 = float(sensor_value)
                             pm10_subindex = get_PM10_subindex(PM10)
