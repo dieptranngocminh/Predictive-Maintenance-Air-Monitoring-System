@@ -48,8 +48,6 @@ def calculate_o3_averages():
 
     return o3_1h_average, o3_8h_average
 
-
-
 # Function called when receiving a message from MQTT
 def on_message(client, userdata, msg):
     try:
@@ -72,6 +70,14 @@ def on_message(client, userdata, msg):
         NO2 = 0
         CO = 0
         O3 = 0
+        pm25_subindex = 0
+        pm10_subindex = 0
+        so2_subindex = 0
+        no2_subindex = 0
+        co_subindex = 0
+        o3_1h_avg = 0
+        o3_8h_avg = 0
+        o3_subindex = 0
 
         # Iterate over sensors data
         for sensor in data.get('sensors', []):
@@ -124,14 +130,9 @@ def on_message(client, userdata, msg):
                 sensor_data = {date_str: {time_str: sensor.get('value')}}
                 sensor_value = sensor_data[date_str][time_str]
 
-
                 # Update the sensor data in Firebase
-        db.reference(sensor_path).set(sensor_data)
+                db.reference(sensor_path).set(sensor_data)
 
-        overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
-                                                        co_subindex, o3_1h_avg, o3_8h_avg)
-                #aqi_bucket = get_AQI_bucket(overall_aqi)
-        db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
 
@@ -143,6 +144,10 @@ def on_message(client, userdata, msg):
         db.reference("/airmonitoringV2/station_info").set(station_info)
 
         # Set the AQI value with its corresponding timestamp
+        overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
+                                            co_subindex, o3_1h_avg, o3_8h_avg)
+        # aqi_bucket = get_AQI_bucket(overall_aqi)
+        db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
 
     except Exception as e:
         print("Exception in on_message: ", e)
