@@ -98,14 +98,12 @@ def on_message(client, userdata, msg):
                 # If the sensor data exists, update it with the new value
                 if sensor_data:
                     if date_str in sensor_data:
-                        print("test sensor data")
                         sensor_data[date_str][time_str] = sensor.get('value')
                         sensor_value = sensor_data[date_str][time_str]
                         # Calculate AQI
                         if sensor_id == 'pm2_5_0001':
                             PM25 = float(sensor_value)
                             pm25_subindex = get_PM25_subindex(PM25)
-                            print("PM25 ")
                         elif sensor_id == 'pm10_0001':
                             PM10 = float(sensor_value)
                             pm10_subindex = get_PM10_subindex(PM10)
@@ -125,19 +123,19 @@ def on_message(client, userdata, msg):
                             o3_1h_subindex = get_O3_subindex_1h(o3_1h_avg)
                             o3_8h_subindex = get_O3_subindex_8h(o3_8h_avg)
                             o3_subindex = get_O3_AQI(o3_1h_subindex, o3_8h_subindex)
+                    else:
+                        sensor_data = {date_str: {time_str: sensor.get('value')}}
+                        sensor_value = sensor_data[date_str][time_str]
                 else:
                     sensor_data = {date_str: {time_str: sensor.get('value')}}
                     sensor_value = sensor_data[date_str][time_str]
 
-            else:
-                sensor_data = {date_str: {time_str: sensor.get('value')}}
-                sensor_value = sensor_data[date_str][time_str]
-
-        # Update the sensor data in Firebase
-        db.reference(sensor_path).set(sensor_data)
-        if(db.reference(sensor_path).set(sensor_data)):
-            print("set")
-
+                # Update the sensor data in Firebase
+                db.reference(sensor_path).set(sensor_data)
+                
+        # Set the AQI value with its corresponding timestamp
+        overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
+                                                    co_subindex, o3_1h_avg, o3_8h_avg)
         # Update last update timestamp and station information
         db.reference("/airmonitoringV2/lastUpdate").set(timestamp)
 
@@ -148,9 +146,6 @@ def on_message(client, userdata, msg):
         }
         db.reference("/airmonitoringV2/station_info").set(station_info)
 
-        # Set the AQI value with its corresponding timestamp
-        overall_aqi = get_overall_daily_AQI(pm25_subindex, pm10_subindex, so2_subindex, no2_subindex,
-                                            co_subindex, o3_1h_avg, o3_8h_avg)
         # aqi_bucket = get_AQI_bucket(overall_aqi)
         db.reference(f"/airmonitoringV2/AQI/{date_str}").child(time_str).set(overall_aqi)
 
