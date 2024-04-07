@@ -94,10 +94,11 @@ def on_message(client, userdata, msg):
 
                 # Check if the sensor data exists in Firebase
                 sensor_data = db.reference(sensor_path).get()
-
+                
                 # If the sensor data exists, update it with the new value
                 if sensor_data:
                     if date_str in sensor_data:
+                        print("test sensor data")
                         sensor_data[date_str][time_str] = sensor.get('value')
                         sensor_value = sensor_data[date_str][time_str]
                         # Calculate AQI
