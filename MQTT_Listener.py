@@ -78,6 +78,7 @@ def on_message(client, userdata, msg):
         o3_1h_avg = 0
         o3_8h_avg = 0
         o3_subindex = 0
+        overall_aqi = 0
 
         # Iterate over sensors data
         for sensor in data.get('sensors', []):
@@ -99,7 +100,6 @@ def on_message(client, userdata, msg):
                     if date_str in sensor_data:
                         sensor_data[date_str][time_str] = sensor.get('value')
                         sensor_value = sensor_data[date_str][time_str]
-                        print("AQI")
                         # Calculate AQI
                         if sensor_id == 'pm2_5_0001':
                             PM25 = float(sensor_value)
