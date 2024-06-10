@@ -11,7 +11,6 @@ from sklearn.preprocessing import StandardScaler
 from keras.models import Model
 from keras.layers import Input, Dense
 from sklearn.linear_model import LinearRegression
-from statsmodels.tsa.arima.model import ARIMA
 
 # Get the current directory of the python script
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -54,8 +53,22 @@ output_layer = Dense(input_dim, activation="linear")(decoder)
 autoencoder = Model(inputs=input_layer, outputs=output_layer)
 autoencoder.compile(optimizer='adam', loss='mean_absolute_error')
 
+# Implement Early Stopping
+early_stopping = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+
+# Train model with Early Stopping
+history = autoencoder.fit(train_data, train_data, epochs=100, batch_size=32, validation_split=0.2, callbacks=[early_stopping])
+
 # Train model
-autoencoder.fit(train_data, train_data, epochs=50, batch_size=32, validation_split=0.2)
+# autoencoder.fit(train_data, train_data, epochs=50, batch_size=32, validation_split=0.2)
+
+# Evaluate the model on training data
+final_train_mae = autoencoder.evaluate(train_data, train_data, verbose=0)
+print(f"Final Training MAE: {final_train_mae}")
+
+# Evaluate the model on test data
+final_test_mae = autoencoder.evaluate(test_data, test_data, verbose=0)
+print(f"Final Test MAE: {final_test_mae}")
 
 # Generate reconstructions for training and test data
 train_reconstructions = autoencoder.predict(train_data)
@@ -64,6 +77,10 @@ test_reconstructions = autoencoder.predict(test_data)
 # Calculate Mean Absolute Error (MAE) loss for training and test data
 train_mae_loss = np.mean(np.abs(train_reconstructions - train_data), axis=1)
 test_mae_loss = np.mean(np.abs(test_reconstructions - test_data), axis=1)
+
+# Print MAE values
+print(f"Training MAE Loss: {train_mae_loss}")
+print(f"Test MAE Loss: {test_mae_loss}")
 
 # Define threshold for HI (Use Gaussian)
 threshold = np.mean(train_mae_loss) + 3*np.std(train_mae_loss)
@@ -112,7 +129,9 @@ else:
 # Plot the linear regression and HI curve for better visualization
 plt.figure(figsize=(10, 6))
 plt.plot(test_mae_loss, label='Test MAE Loss')
-plt.plot(time_indices, reg.predict(time_indices), label='Linear Regression', color='orange')
-plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
+plt.plot(train_mae_loss, label='Train MAE Loss')
+# plt.plot(time_indices, reg.predict(time_indices), label='Linear Regression', color='orange')
+# plt.axhline(y=threshold, color='r', linestyle='--', label='Threshold')
 plt.legend()
 plt.show()
+
